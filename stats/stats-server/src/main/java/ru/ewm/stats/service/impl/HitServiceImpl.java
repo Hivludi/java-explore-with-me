@@ -48,7 +48,13 @@ public class HitServiceImpl implements HitService {
                     .sorted(Comparator.comparing(ViewStatsDto::getHits).reversed())
                     .collect(Collectors.toList());
         }
-        return repository.getStats(startDateTime, endDateTime, uris)
+        if(!uris.isEmpty()) {
+            return repository.getStats(startDateTime, endDateTime, uris)
+                    .stream()
+                    .sorted(Comparator.comparing(ViewStatsDto::getHits).reversed())
+                    .collect(Collectors.toList());
+        }
+        return repository.getStatsAll(startDateTime, endDateTime)
                 .stream()
                 .sorted(Comparator.comparing(ViewStatsDto::getHits).reversed())
                 .collect(Collectors.toList());

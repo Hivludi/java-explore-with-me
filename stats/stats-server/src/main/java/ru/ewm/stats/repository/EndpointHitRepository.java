@@ -18,6 +18,13 @@ public interface EndpointHitRepository extends JpaRepository<EndpointHit, Long> 
             " GROUP BY e.app, e.uri")
     List<ViewStatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris);
 
+    @Query(value = "SELECT new dto.ViewStatsDto(e.app, e.uri, COUNT(e.ip)) " +
+            " FROM EndpointHit AS e" +
+            " WHERE e.timestamp >= :start" +
+            " AND e.timestamp <= :end" +
+            " GROUP BY e.app, e.uri")
+    List<ViewStatsDto> getStatsAll(LocalDateTime start, LocalDateTime end);
+
     @Query("SELECT new dto.ViewStatsDto(e.app, e.uri, COUNT(distinct e.ip)) " +
             " FROM EndpointHit AS e" +
             " WHERE e.timestamp >= :start" +
