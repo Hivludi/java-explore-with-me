@@ -108,7 +108,7 @@ public class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorApi InvalidEventDateException(final InvalidEventDateException e) {
+    public ErrorApi handleInvalidEventDateException(final InvalidEventDateException e) {
         String message = e.getMessage();
         log.warn(message);
         ErrorApi errorApi = new ErrorApi();
