@@ -21,7 +21,6 @@ import javax.validation.constraints.NotNull;
 @RequiredArgsConstructor
 public class AdminCompilationController {
 
-    @Autowired
     private final AdminCompilationService adminCompilationService;
 
     @PostMapping
