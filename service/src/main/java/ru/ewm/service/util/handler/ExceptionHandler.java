@@ -9,10 +9,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import ru.ewm.service.util.exception.AccessException;
-import ru.ewm.service.util.exception.ErrorApi;
-import ru.ewm.service.util.exception.NotFoundException;
-import ru.ewm.service.util.exception.InvalidOperationException;
+import ru.ewm.service.util.exception.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -72,6 +69,19 @@ public class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorApi handleEventNotFoundException(final EventNotFoundException e) {
+        String message = e.getMessage();
+        log.warn(message);
+        ErrorApi errorApi = new ErrorApi();
+        errorApi.setStatus(HttpStatus.BAD_REQUEST.name());
+        errorApi.setReason("Required object not found");
+        errorApi.setMessage(message);
+        errorApi.setTimestamp(LocalDateTime.now());
+        return errorApi;
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorApi handleMethodArgumentTypeMismatchException(final MethodArgumentTypeMismatchException e) {
         String message = e.getMessage();
         log.warn(message);
@@ -90,6 +100,19 @@ public class ExceptionHandler {
         log.warn(message);
         ErrorApi errorApi = new ErrorApi();
         errorApi.setStatus(HttpStatus.CONFLICT.name());
+        errorApi.setReason("Invalid operation");
+        errorApi.setMessage(message);
+        errorApi.setTimestamp(LocalDateTime.now());
+        return errorApi;
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorApi InvalidEventDateException(final InvalidEventDateException e) {
+        String message = e.getMessage();
+        log.warn(message);
+        ErrorApi errorApi = new ErrorApi();
+        errorApi.setStatus(HttpStatus.BAD_REQUEST.name());
         errorApi.setReason("Invalid operation");
         errorApi.setMessage(message);
         errorApi.setTimestamp(LocalDateTime.now());
@@ -124,6 +147,19 @@ public class ExceptionHandler {
         ErrorApi errorApi = new ErrorApi();
         errorApi.setStatus(HttpStatus.CONFLICT.name());
         errorApi.setReason("Access error");
+        errorApi.setMessage(message);
+        errorApi.setTimestamp(LocalDateTime.now());
+        return errorApi;
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorApi handleIllegalArgumentException(final IllegalArgumentException e) {
+        String message = e.getMessage();
+        log.warn(message);
+        ErrorApi errorApi = new ErrorApi();
+        errorApi.setStatus(HttpStatus.BAD_REQUEST.name());
+        errorApi.setReason("Argument error");
         errorApi.setMessage(message);
         errorApi.setTimestamp(LocalDateTime.now());
         return errorApi;

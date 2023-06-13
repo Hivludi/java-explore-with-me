@@ -56,7 +56,7 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
 
         List<ParticipationRequest> confirmedRequests = commonRequestService
                 .findConfirmedRequests(List.of(event));
-        if (confirmedRequests.size() == event.getParticipantLimit()) {
+        if (event.getParticipantLimit() != 0 && confirmedRequests.size() == event.getParticipantLimit()) {
             throw new InvalidOperationException("Limit over");
         }
 

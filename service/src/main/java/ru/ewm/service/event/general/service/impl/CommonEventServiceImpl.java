@@ -10,6 +10,7 @@ import ru.ewm.service.category.general.model.Category;
 import ru.ewm.service.event.general.service.CommonEventService;
 import ru.ewm.service.util.enums.State;
 import ru.ewm.service.util.exception.AccessException;
+import ru.ewm.service.util.exception.InvalidEventDateException;
 import ru.ewm.service.util.exception.InvalidOperationException;
 import ru.ewm.service.event.general.dto.UpdateEventRequest;
 import ru.ewm.service.event.general.model.Event;
@@ -48,7 +49,7 @@ public class CommonEventServiceImpl implements CommonEventService {
         }
         if (updateEventRequest.getEventDate() != null) {
             if (updateEventRequest.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
-                throw new InvalidOperationException("Invalid date");
+                throw new InvalidEventDateException("Invalid date");
             }
             eventToUpdate.setEventDate(updateEventRequest.getEventDate());
         }

@@ -47,8 +47,7 @@ public class CreateEventDto {
 
     private int participantLimit;
 
-    @Value("true")
-    private boolean requestModeration;
+    private boolean requestModeration = true;
 
 
     @Override

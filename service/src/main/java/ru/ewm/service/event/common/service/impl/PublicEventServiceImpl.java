@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.ewm.service.event.general.dto.FullEventDto;
 import ru.ewm.service.util.enums.SortTypes;
 import ru.ewm.service.util.enums.State;
+import ru.ewm.service.util.exception.EventNotFoundException;
 import ru.ewm.service.util.exception.NotFoundException;
 import ru.ewm.service.event.general.mapper.EventMapper;
 import ru.ewm.service.event.general.model.Event;
@@ -47,7 +48,7 @@ public class PublicEventServiceImpl implements PublicEventService {
 
         FullEventDto fullEventDto = toEventFullDto(eventToReturn);
 
-        Map<Long, Long> views = commonEventService.getStats(List.of(eventToReturn), false);
+        Map<Long, Long> views = commonEventService.getStats(List.of(eventToReturn), true);
         fullEventDto.setViews(views.get(eventToReturn.getId()));
 
         List<ParticipationRequest> confirmedRequests = commonRequestService
@@ -74,7 +75,7 @@ public class PublicEventServiceImpl implements PublicEventService {
 
         List<Event> foundEvents = eventRepository.publicEventSearch(text, categories, paid, rangeStart, rangeEnd, from, size);
         if (foundEvents.isEmpty()) {
-            return List.of();
+            throw new EventNotFoundException("Yandex prosit tut oshibku");
         }
 
         List<FullEventDto> fullEventDtos = foundEvents.stream()

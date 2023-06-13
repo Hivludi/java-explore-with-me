@@ -8,6 +8,8 @@ import ru.ewm.service.category.general.model.Category;
 import ru.ewm.service.event.general.dto.CreateEventDto;
 import ru.ewm.service.event.general.dto.FullEventDto;
 import ru.ewm.service.util.enums.State;
+import ru.ewm.service.util.enums.StateAction;
+import ru.ewm.service.util.exception.InvalidEventDateException;
 import ru.ewm.service.util.exception.NotFoundException;
 import ru.ewm.service.util.exception.InvalidOperationException;
 import ru.ewm.service.event.general.dto.UpdateEventRequest;
@@ -42,7 +44,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     @Override
     public FullEventDto addEvent(Long userId, CreateEventDto createEventDto) {
         if (createEventDto.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
-            throw new InvalidOperationException("Invalid event date");
+            throw new InvalidEventDateException("Invalid event date");
         }
         Event eventToSave = toEvent(createEventDto);
         Category category = entityValidator.checkIfCategoryExist(createEventDto.getCategory());
@@ -103,6 +105,8 @@ public class PrivateEventServiceImpl implements PrivateEventService {
             throw new InvalidOperationException("Event could be updated only by initiator");
         }
         Event updatedEvent = commonEventService.updateEvent(eventToUpdate, updateEventUserRequest);
+        StateAction updatedEventStateAction = updateEventUserRequest.getStateAction();
+        if (updatedEventStateAction == null) return toEventFullDto(eventRepository.save(updatedEvent));
         switch (updateEventUserRequest.getStateAction()) {
             case SEND_TO_REVIEW:
                 updatedEvent.setState(State.PENDING);

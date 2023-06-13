@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ewm.service.event.general.dto.FullEventDto;
 import ru.ewm.service.util.enums.State;
+import ru.ewm.service.util.enums.StateAction;
+import ru.ewm.service.util.exception.InvalidEventDateException;
 import ru.ewm.service.util.exception.InvalidOperationException;
 import ru.ewm.service.event.general.dto.UpdateEventRequest;
 import ru.ewm.service.event.general.mapper.EventMapper;
@@ -48,6 +50,12 @@ public class AdminEventServiceImpl implements AdminEventService {
         if (!views.isEmpty()) {
             fullEventDtos.forEach(e -> e.setViews(views.get(e.getId())));
         }
+
+        for (FullEventDto event : fullEventDtos) {
+            Integer confirmedRequests = eventRepository.findConfirmedRequests(event.getId());
+            if (confirmedRequests != null) event.setConfirmedRequests(confirmedRequests);
+        }
+
         return fullEventDtos;
     }
 
@@ -55,7 +63,7 @@ public class AdminEventServiceImpl implements AdminEventService {
     public FullEventDto updateEvent(Long eventId, UpdateEventRequest updateEventAdminRequest) {
         Event eventToUpdate = entityValidator.checkIfEventExist(eventId);
         if (eventToUpdate.getEventDate().isBefore(LocalDateTime.now().plusHours(1))) {
-            throw new InvalidOperationException("Invalid event date");
+            throw new InvalidEventDateException("Invalid event date");
         }
         if (!State.PENDING.equals(eventToUpdate.getState())) {
             throw new InvalidOperationException(
@@ -63,7 +71,9 @@ public class AdminEventServiceImpl implements AdminEventService {
                             eventToUpdate.getState().name()));
         }
         Event updatedEvent = commonEventService.updateEvent(eventToUpdate, updateEventAdminRequest);
-        switch (updateEventAdminRequest.getStateAction()) {
+        StateAction updatedEventStateAction = updateEventAdminRequest.getStateAction();
+        if (updatedEventStateAction == null) return toEventFullDto(eventRepository.save(updatedEvent));
+        switch (updatedEventStateAction) {
             case PUBLISH_EVENT:
                 updatedEvent.setPublishedOn(LocalDateTime.now());
                 updatedEvent.setState(State.PUBLISHED);

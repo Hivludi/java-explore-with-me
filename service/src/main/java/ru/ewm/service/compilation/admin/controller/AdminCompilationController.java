@@ -2,10 +2,12 @@ package ru.ewm.service.compilation.admin.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.ewm.service.compilation.general.dto.CompilationDto;
 import ru.ewm.service.compilation.general.dto.NewCompilationDto;
 import ru.ewm.service.compilation.general.dto.UpdateCompilationRequest;
 import ru.ewm.service.compilation.admin.service.AdminCompilationService;
@@ -20,6 +22,7 @@ import javax.validation.constraints.NotNull;
 @RequiredArgsConstructor
 public class AdminCompilationController {
 
+    @Autowired
     private final AdminCompilationService adminCompilationService;
 
     @PostMapping
@@ -39,7 +42,6 @@ public class AdminCompilationController {
     public ResponseEntity<Object> updateCompilation(@PathVariable(name = "compId") Long compId,
                                                     @RequestBody @NotNull UpdateCompilationRequest updateRequest) {
         log.info("Update compilation {}", compId);
-        return new ResponseEntity<>(adminCompilationService
-                .updateCompilation(compId, updateRequest), HttpStatus.OK);
+        return new ResponseEntity<>(adminCompilationService.updateCompilation(compId, updateRequest), HttpStatus.OK);
     }
 }

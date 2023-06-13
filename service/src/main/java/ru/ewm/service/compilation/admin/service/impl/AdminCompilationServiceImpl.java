@@ -3,6 +3,7 @@ package ru.ewm.service.compilation.admin.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import ru.ewm.service.compilation.general.dto.CompilationDto;
 import ru.ewm.service.compilation.general.dto.NewCompilationDto;
 import ru.ewm.service.compilation.general.dto.UpdateCompilationRequest;
@@ -17,6 +18,8 @@ import ru.ewm.service.participation_request.model.ParticipationRequest;
 import ru.ewm.service.participation_request.service.CommonRequestService;
 import ru.ewm.service.util.validator.EntityValidator;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -36,8 +39,15 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
 
     @Override
     public CompilationDto addCompilation(NewCompilationDto newCompilationDto) {
+        if (newCompilationDto.getTitle().length() > 50) throw new IllegalArgumentException("Title name is too long");
         Compilation compilationToSave = toCompilation(newCompilationDto);
-        List<Event> events = eventRepository.findAllById(newCompilationDto.getEvents());
+        List<Event> events;
+        List<Long> eventIds = newCompilationDto.getEvents();
+        if (eventIds != null && !eventIds.isEmpty()) {
+            events = eventRepository.findAllById(newCompilationDto.getEvents());
+        } else {
+            events = new ArrayList<>();
+        }
         compilationToSave.setEvents(events);
         CompilationDto compilationDto = toCompilationDto(compilationRepository.save(compilationToSave));
 
@@ -64,12 +74,8 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
 
     @Override
     public CompilationDto updateCompilation(Long compId, UpdateCompilationRequest updateRequest) {
+        if (updateRequest.getTitle() != null && updateRequest.getTitle().length() > 50) throw new IllegalArgumentException("Title name is too long");
         Compilation compilationToUpdate = entityValidator.checkIfCompilationExist(compId);
-
-        if (updateRequest.getEvents() != null) {
-            List<Event> events = eventRepository.findAllById(updateRequest.getEvents());
-            compilationToUpdate.setEvents(events);
-        }
 
         if (updateRequest.getPinned() != null) {
             compilationToUpdate.setPinned(updateRequest.getPinned());
@@ -77,6 +83,11 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
 
         if (updateRequest.getTitle() != null) {
             compilationToUpdate.setTitle(updateRequest.getTitle());
+        }
+
+        if (updateRequest.getEvents() != null) {
+            List<Event> events = eventRepository.findAllById(updateRequest.getEvents());
+            compilationToUpdate.setEvents(events);
         }
 
         CompilationDto updatedCompilationDto = toCompilationDto(compilationRepository.save(compilationToUpdate));

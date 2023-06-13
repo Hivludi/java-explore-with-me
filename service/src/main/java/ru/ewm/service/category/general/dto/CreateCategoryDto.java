@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class CreateCategoryDto {
     @NotBlank(message = "Blank name")
+    @Size(max = 50, message = "Name is too long")
     private String name;
 
     @Override
