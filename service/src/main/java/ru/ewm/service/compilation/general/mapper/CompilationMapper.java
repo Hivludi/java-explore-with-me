@@ -10,7 +10,7 @@ import ru.ewm.service.event.general.mapper.EventMapper;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CompilationMapper {
+public final class CompilationMapper {
 
     public static Compilation toCompilation(NewCompilationDto newCompilationDto) {
         Compilation compilation = new Compilation();

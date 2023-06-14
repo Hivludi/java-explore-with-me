@@ -31,15 +31,15 @@ public class AdminEventController {
 
     @GetMapping
     public ResponseEntity<Object> findEvents(
-            @RequestParam(name = "users", required = false) List<Long> users,
-            @RequestParam(name = "states", required = false) List<State> states,
-            @RequestParam(name = "categories", required = false) List<Long> categories,
-            @RequestParam(name = "rangeStart", required = false)
+            @RequestParam(required = false) List<Long> users,
+            @RequestParam(required = false) List<State> states,
+            @RequestParam(required = false) List<Long> categories,
+            @RequestParam(required = false)
             @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeStart,
-            @RequestParam(name = "rangeEnd", required = false)
+            @RequestParam(required = false)
             @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeEnd,
-            @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero long from,
-            @RequestParam(name = "size", defaultValue = "10") @Positive int size
+            @RequestParam(defaultValue = "0") @PositiveOrZero long from,
+            @RequestParam(defaultValue = "10") @Positive int size
     ) {
         log.info("Find event by users {}, states {}, categories {}, rangeStart {}, rangeEnd {}",
                 users, states, categories, rangeStart, rangeEnd);

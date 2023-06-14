@@ -6,7 +6,7 @@ import ru.ewm.service.participation_request.dto.RequestDto;
 import ru.ewm.service.participation_request.model.ParticipationRequest;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class RequestMapper {
+public final class RequestMapper {
 
     public static RequestDto toParticipationRequestDto(ParticipationRequest request) {
         return new RequestDto(

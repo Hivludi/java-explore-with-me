@@ -7,7 +7,7 @@ import ru.ewm.service.category.general.dto.CreateCategoryDto;
 import ru.ewm.service.category.general.model.Category;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CategoryMapper {
+public final class CategoryMapper {
 
     public static Category toCategory(CreateCategoryDto createCategoryDto) {
         Category category = new Category();

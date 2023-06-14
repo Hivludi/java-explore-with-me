@@ -12,7 +12,7 @@ import static ru.ewm.service.category.general.mapper.CategoryMapper.toCategoryDt
 import static ru.ewm.service.user.mapper.UserMapper.toUserShortDto;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class EventMapper {
+public final class EventMapper {
 
     public static Event toEvent(CreateEventDto createEventDto) {
         Event event = new Event();

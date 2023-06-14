@@ -8,7 +8,7 @@ import ru.ewm.service.user.dto.ShortUserDto;
 import ru.ewm.service.user.model.User;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserMapper {
+public final class UserMapper {
 
     public static User toUser(CreateUserDto userDto) {
         User user = new User();
