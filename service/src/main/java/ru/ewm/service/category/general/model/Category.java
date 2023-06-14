@@ -3,7 +3,6 @@ package ru.ewm.service.category.general.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Getter
 @Setter
