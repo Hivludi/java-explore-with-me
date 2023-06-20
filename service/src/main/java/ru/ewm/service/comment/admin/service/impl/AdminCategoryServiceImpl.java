@@ -1,4 +1,4 @@
-package ru.ewm.service.category.admin.service.impl;
+package ru.ewm.service.comment.admin.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -8,7 +8,7 @@ import ru.ewm.service.category.general.dto.CategoryDto;
 import ru.ewm.service.category.general.dto.CreateCategoryDto;
 import ru.ewm.service.category.general.model.Category;
 import ru.ewm.service.category.general.repository.CategoryRepository;
-import ru.ewm.service.category.admin.service.AdminCategoryService;
+import ru.ewm.service.comment.admin.service.AdminCategoryService;
 import ru.ewm.service.util.exception.NotFoundException;
 
 import java.util.Optional;

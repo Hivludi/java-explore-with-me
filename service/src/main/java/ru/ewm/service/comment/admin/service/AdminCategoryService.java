@@ -1,4 +1,4 @@
-package ru.ewm.service.category.admin.service;
+package ru.ewm.service.comment.admin.service;
 
 import ru.ewm.service.category.general.dto.CategoryDto;
 import ru.ewm.service.category.general.dto.CreateCategoryDto;
