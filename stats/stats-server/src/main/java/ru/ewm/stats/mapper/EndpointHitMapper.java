@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import ru.ewm.stats.model.EndpointHit;
 
 @NoArgsConstructor
-public class EndpointHitMapper {
+public final class EndpointHitMapper {
 
     public static EndpointHit toEndpointHit(EndpointHitDto hitDto) {
         return new EndpointHit(
