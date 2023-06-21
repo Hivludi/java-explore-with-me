@@ -6,7 +6,6 @@ import ru.ewm.service.user.model.User;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Objects;
 
 @Entity
 @Table(name = "comments")
