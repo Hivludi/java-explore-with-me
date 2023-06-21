@@ -16,10 +16,12 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private long id;
 
     @OneToOne(optional = false)
@@ -37,21 +39,4 @@ public class Comment {
 
     @Column(nullable = false)
     private String text;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Comment)) return false;
-        Comment comment = (Comment) o;
-        return Objects.equals(author, comment.author)
-                && Objects.equals(event, comment.event)
-                && Objects.equals(createdOn, comment.createdOn)
-                && Objects.equals(updatedOn, comment.updatedOn)
-                && Objects.equals(text, comment.text);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(author, event, createdOn, updatedOn, text);
-    }
 }
